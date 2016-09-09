@@ -27,12 +27,12 @@ from thrift.transport import TSocket
 from thrift.transport import TTransport
 from thrift.protocol import TBinaryProtocol
 
-interface_to_front_mapping = {}
+#interface_to_front_mapping = {}
 
 class ThriftInterface(BaseTest):
 
     def setUp(self):
-        global interface_to_front_mapping
+        #global interface_to_front_mapping
 
         BaseTest.setUp(self)
 
@@ -41,7 +41,7 @@ class ThriftInterface(BaseTest):
             server = self.test_params['server']
         else:
             server = 'localhost'
-
+        """
         if self.test_params.has_key("port_map"):
             user_input = self.test_params['port_map']
             splitted_map = user_input.split(",")
@@ -58,7 +58,7 @@ class ThriftInterface(BaseTest):
                 interface_to_front_mapping[interface_front_pair[0]] = interface_front_pair[1].strip()
         else:
             exit("No ptf interface<-> switch front port mapping, please specify as parameter or in external file")	    
-            
+        """
         # Set up thrift client and contact server
         self.transport = TSocket.TSocket(server, 9092)
         self.transport = TTransport.TBufferedTransport(self.transport)

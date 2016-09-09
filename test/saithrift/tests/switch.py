@@ -41,7 +41,7 @@ from switch_sai_thrift.sai_headers import  *
 this_dir = os.path.dirname(os.path.abspath(__file__))
 
 switch_inited=0
-port_list = {}
+port_list = []
 sai_port_list = []
 front_port_list = []
 table_attr_list = []
@@ -66,7 +66,8 @@ def switch_init(client):
                 attr_value = sai_thrift_attribute_value_t(booldata=1)
                 attr = sai_thrift_attribute_t(id=SAI_PORT_ATTR_ADMIN_STATE, value=attr_value)
                 client.sai_thrift_set_port_attribute(port_id, attr)
-                sai_port_list.append(port_id)
+                port_list.append(port_id)
+
         else:
             print "unknown switch attribute"
 
@@ -76,7 +77,7 @@ def switch_init(client):
 
     # wait till the port are up
     time.sleep(10)
-
+    """
     thrift_attr = client.sai_thrift_get_port_list_by_front_port()
     if thrift_attr.id == SAI_SWITCH_ATTR_PORT_LIST:
         for port_id in thrift_attr.value.objlist.object_id_list:
@@ -85,7 +86,7 @@ def switch_init(client):
     for interface,front in interface_to_front_mapping.iteritems():
         sai_port_id = client.sai_thrift_get_port_id_by_front_port(front);
         port_list[int(interface)]=sai_port_id
-           
+    """
     switch_inited = 1
 
 
@@ -128,7 +129,7 @@ def sai_thrift_create_virtual_router(client, v4_enabled, v6_enabled):
     #v6 enabled
     vr_attribute2_value = sai_thrift_attribute_value_t(booldata=v6_enabled)
     vr_attribute2 = sai_thrift_attribute_t(id=SAI_VIRTUAL_ROUTER_ATTR_ADMIN_V6_STATE,
-                                           value=vr_attribute1_value)
+                                           value=vr_attribute2_value)
     vr_attr_list = [vr_attribute1, vr_attribute2]
     vr_id = client.sai_thrift_create_virtual_router(thrift_attr_list=vr_attr_list)
     return vr_id
@@ -675,3 +676,7 @@ def sai_thrift_set_port_shaper(client, port_id, max_rate):
     attr_value = sai_thrift_attribute_value_t(oid=sched_prof_id)
     attr = sai_thrift_attribute_t(id=SAI_PORT_ATTR_QOS_SCHEDULER_PROFILE_ID, value=attr_value)
     client.sai_thrift_set_port_attribute(port_id,attr)
+    
+def wait_till_configuration_will_end():
+    print "Waiting the end of configuration..."
+    time.sleep(5)

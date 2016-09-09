@@ -48,6 +48,9 @@ class L3IPv4HostTest(sai_base_test.ThriftInterfaceDataPlane):
         nhop1 = sai_thrift_create_nhop(self.client, addr_family, ip_addr1, rif_id1)
         sai_thrift_create_route(self.client, vr_id, addr_family, ip_addr1_subnet, ip_mask1, rif_id1)
         
+        # Waiting the end of configuration ...
+        wait_till_configuration_will_end()
+        
         # send the test packet(s)
         pkt = simple_tcp_packet(eth_dst=router_mac,
                                 eth_src='00:22:22:22:22:22',
@@ -104,6 +107,9 @@ class L3IPv4LpmTest(sai_base_test.ThriftInterfaceDataPlane):
         sai_thrift_create_route(self.client, vr_id, addr_family, ip_addr1, ip_mask1, nhop1)
         sai_thrift_create_route(self.client, vr_id, addr_family, nhop_ip1_subnet, ip_mask2, rif_id1)
 
+        # Waiting the end of configuration ...
+        wait_till_configuration_will_end()
+
         # send the test packet(s)
         pkt = simple_tcp_packet(eth_dst=router_mac,
                                 eth_src='00:22:22:22:22:22',
@@ -156,7 +162,10 @@ class L3IPv6HostTest(sai_base_test.ThriftInterfaceDataPlane):
         dmac1 = '00:11:22:33:44:55'
         sai_thrift_create_neighbor(self.client, addr_family, rif_id1, ip_addr1, dmac1)
         nhop1 = sai_thrift_create_nhop(self.client, addr_family, ip_addr1, rif_id1)
-        sai_thrift_create_route(self.client, vr_id, addr_family, ip_addr1_subnet, ip_mask1, rif_id1)
+        sai_thrift_create_route(self.client, vr_id, addr_family, ip_addr1_subnet, ip_mask1, nhop1)
+
+        # Waiting the end of configuration ...
+        wait_till_configuration_will_end()
 
         # send the test packet(s)
         pkt = simple_tcpv6_packet( eth_dst=router_mac,
@@ -212,6 +221,10 @@ class L3IPv6LpmTest(sai_base_test.ThriftInterfaceDataPlane):
         nhop1 = sai_thrift_create_nhop(self.client, addr_family, nhop_ip1, rif_id1)
         sai_thrift_create_route(self.client, vr_id, addr_family, ip_addr1, ip_mask1, nhop1)
         sai_thrift_create_route(self.client, vr_id, addr_family, nhop_ip1_subnet, ip_mask2, rif_id1)
+
+
+        # Waiting the end of configuration ...
+        wait_till_configuration_will_end()
 
         # send the test packet(s)
         pkt = simple_tcpv6_packet( eth_dst=router_mac,
@@ -273,6 +286,10 @@ class L3IPv4EcmpHostTest(sai_base_test.ThriftInterfaceDataPlane):
         nhop_group1 = sai_thrift_create_next_hop_group(self.client, [nhop1, nhop2])
         sai_thrift_create_route(self.client, vr_id, addr_family, ip_addr1_subnet, ip_mask1, rif_id1)
         sai_thrift_create_route(self.client, vr_id, addr_family, ip_addr1_subnet, ip_mask1, rif_id2)
+
+
+        # Waiting the end of configuration ...
+        wait_till_configuration_will_end()
 
         # send the test packet(s)
         try:
@@ -376,6 +393,10 @@ class L3IPv6EcmpHostTest(sai_base_test.ThriftInterfaceDataPlane):
         nhop2 = sai_thrift_create_nhop(self.client, addr_family, ip_addr1, rif_id2)
         nhop_group1 = sai_thrift_create_next_hop_group(self.client, [nhop1, nhop2])
         sai_thrift_create_route(self.client, vr_id, addr_family, ip_addr1, ip_mask1, nhop_group1)
+
+          # Waiting the end of configuration ...
+        wait_till_configuration_will_end()
+
 
         # send the test packet(s)
         try:
@@ -494,6 +515,10 @@ class L3IPv4EcmpLpmTest(sai_base_test.ThriftInterfaceDataPlane):
         sai_thrift_create_route(self.client, vr_id, addr_family, nhop_ip2_subnet, ip_mask2, rif_id2)
         sai_thrift_create_route(self.client, vr_id, addr_family, nhop_ip3_subnet, ip_mask2, rif_id3)
 
+
+        # Waiting the end of configuration ...
+        wait_till_configuration_will_end()
+
         # send the test packet(s)
         try:
             count = [0, 0, 0]
@@ -598,6 +623,10 @@ class L3IPv6EcmpLpmTest(sai_base_test.ThriftInterfaceDataPlane):
         nhop3 = sai_thrift_create_nhop(self.client, addr_family, nhop_ip3, rif_id3)
         nhop_group1 = sai_thrift_create_next_hop_group(self.client, [nhop1, nhop2, nhop3])
         sai_thrift_create_route(self.client, vr_id, addr_family, ip_addr1, ip_mask1, nhop_group1)
+
+
+        # Waiting the end of configuration ...
+        wait_till_configuration_will_end()
 
         # send the test packet(s)
         try:
@@ -715,6 +744,10 @@ class L3IPv4LagTest(sai_base_test.ThriftInterfaceDataPlane):
         nhop1 = sai_thrift_create_nhop(self.client, addr_family, ip_addr1, rif_id1)
         sai_thrift_create_route(self.client, vr_id, addr_family, ip_addr1_subnet, ip_mask1, rif_id1)
 
+
+      # Waiting the end of configuration ...
+        wait_till_configuration_will_end()
+
         # send the test packet(s)
         try:
             pkt = simple_tcp_packet(eth_dst=router_mac,
@@ -774,7 +807,11 @@ class L3IPv6LagTest(sai_base_test.ThriftInterfaceDataPlane):
         dmac1 = '00:11:22:33:44:55'
         sai_thrift_create_neighbor(self.client, addr_family, rif_id1, ip_addr1, dmac1)
         nhop1 = sai_thrift_create_nhop(self.client, addr_family, ip_addr1, rif_id1)
-        sai_thrift_create_route(self.client, vr_id, addr_family, ip_addr1_subnet, ip_mask1, rif_id1)
+        sai_thrift_create_route(self.client, vr_id, addr_family, ip_addr1_subnet, ip_mask1, nhop1)
+
+
+      # Waiting the end of configuration ...
+        wait_till_configuration_will_end()
 
         # send the test packet(s)
         try:
@@ -858,6 +895,9 @@ class L3EcmpLagTest(sai_base_test.ThriftInterfaceDataPlane):
         nhop_group1 = sai_thrift_create_next_hop_group(self.client, [nhop1, nhop2, nhop3])
         sai_thrift_create_route(self.client, vr_id, addr_family, ip_addr1, ip_mask1, nhop_group1)
 
+      # Waiting the end of configuration ...
+        wait_till_configuration_will_end()
+
         try:
             count = [0, 0, 0, 0, 0, 0]
             dst_ip = int(socket.inet_aton('10.10.10.1').encode('hex'), 16)
@@ -866,7 +906,7 @@ class L3EcmpLagTest(sai_base_test.ThriftInterfaceDataPlane):
             for i in range(0, max_itrs):
                 dst_ip_addr = socket.inet_ntoa(hex(dst_ip)[2:].zfill(8).decode('hex'))
                 src_mac = src_mac_start + str(i%99).zfill(2)
-                pkt = simple_tcp_packet(eth_dst='router_mac',
+                pkt = simple_tcp_packet(eth_dst=router_mac,
                         eth_src=src_mac,
                         ip_dst=dst_ip_addr,
                         ip_src='192.168.8.1',
@@ -874,19 +914,19 @@ class L3EcmpLagTest(sai_base_test.ThriftInterfaceDataPlane):
                         ip_ttl=64)
 
                 exp_pkt1 = simple_tcp_packet(eth_dst='00:11:22:33:44:55',
-                        eth_src='router_mac',
+                        eth_src=router_mac,
                         ip_dst=dst_ip_addr,
                         ip_src='192.168.8.1',
                         ip_id=106,
                         ip_ttl=63)
                 exp_pkt2 = simple_tcp_packet(eth_dst='00:11:22:33:44:56',
-                        eth_src='router_mac',
+                        eth_src=router_mac,
                         ip_dst=dst_ip_addr,
                         ip_src='192.168.8.1',
                         ip_id=106,
                         ip_ttl=63)
                 exp_pkt3 = simple_tcp_packet(eth_dst='00:11:22:33:44:57',
-                        eth_src='router_mac',
+                        eth_src=router_mac,
                         ip_dst=dst_ip_addr,
                         ip_src='192.168.8.1',
                         ip_id=106,
@@ -984,6 +1024,9 @@ class L3EcmpLagTestMini(sai_base_test.ThriftInterfaceDataPlane):
         sai_thrift_create_route(self.client, vr_id, addr_family, ip_addr1, ip_mask1, nhop_group1)
         sai_thrift_create_route(self.client, vr_id, addr_family, nhop_ip1_subnet, ip_mask2, rif_id1)
         sai_thrift_create_route(self.client, vr_id, addr_family, nhop_ip2_subnet, ip_mask2, rif_id2)
+
+        # Waiting the end of configuration ...
+        wait_till_configuration_will_end()
 
         try:
             count = [0, 0, 0]
@@ -1103,6 +1146,10 @@ class L3VIIPv4HostTest(sai_base_test.ThriftInterfaceDataPlane):
         nhop2 = sai_thrift_create_nhop(self.client, addr_family, ip_addr2, rif_id2)
         sai_thrift_create_route(self.client, vr_id, addr_family, ip_addr2_subnet, ip_mask2, rif_id2)
 
+
+        # Waiting the end of configuration ...
+        wait_till_configuration_will_end()
+
         try:
             # send the test packet(s)
             pkt = simple_tcp_packet(eth_dst=router_mac,
@@ -1187,6 +1234,10 @@ class L3IPv4MacRewriteTest(sai_base_test.ThriftInterfaceDataPlane):
         nhop1 = sai_thrift_create_nhop(self.client, addr_family, nhop_ip1, rif_id1)
         sai_thrift_create_route(self.client, vr_id, addr_family, ip_addr1, ip_mask1, nhop1)
         sai_thrift_create_route(self.client, vr_id, addr_family, nhop_ip1_subnet, nhop_ip1_mask, rif_id1)
+
+
+        # Waiting the end of configuration ...
+        wait_till_configuration_will_end()
 
         # send the test packet(s)
         pkt = simple_tcp_packet(eth_dst=rewrite_mac2,
